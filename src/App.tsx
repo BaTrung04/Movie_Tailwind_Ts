@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./Components/Home/Home";
+import NavBar from "./Components/Navbar/NavBar";
+import NewStory from "./Components/NewStory/NewStory";
+import Releasing from "./Components/Releasing/Releasing";
+import ComingSoon from "./Components/ComingSoon/ComingSoon";
+import Complete from "./Components/Complete/Complete";
+import { useEffect, useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface WindowSize {
+  width: number | undefined;
+  height: number | undefined;
 }
 
-export default App
+function App() {
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: undefined,
+    height: undefined,
+  });
+  const [isMobile, setMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener("resize", handleSize);
+    handleSize();
+    return () => window.removeEventListener("resize", handleSize);
+  }, []);
+  useEffect(() => {
+    if (windowSize.width && windowSize.width < 800) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+  }, [windowSize]);
+  return (
+    <>
+      <Router>
+        <div>
+          <NavBar isMobile={isMobile} />
+          <div className="p-4">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/truyen-moi" element={<NewStory />} />
+              <Route path="/sap-ra-mat" element={<Releasing />} />
+              <Route path="/dang-phat-hanh" element={<ComingSoon />} />
+              <Route path="/hoan-thanh" element={<Complete />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </>
+  );
+}
+
+export default App;

@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#fdcd2d",
+        primary: "#fff",
       },
       fontFamily: {
         sans: ["Sora", "sans-serif"],
@@ -19,7 +19,10 @@ export default {
           "2xl": "6rem",
         },
       },
+      screens: {
+        lg: "800px", // Thêm breakpoint mới cho 670px
+      },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
