@@ -40,7 +40,7 @@ const Home = () => {
                 return (
                   <div
                     key={categories._id}
-                    className=" text-[14px] bg-blue-100  rounded-md p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden"
+                    className="text-[14px] bg-blue-100  rounded-md p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden"
                   >
                     {categories.name}
                   </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import { getHome } from "../../services/apiServices";
+import { useNavigate } from "react-router-dom";
 interface Comic {
   _id: string;
   name: string;
@@ -17,6 +18,7 @@ interface Data {
 const HomePage = () => {
   const [data, setData] = useState<Data>({ type_list: "" });
   const [dataComic, setDataComic] = useState<Comic[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -33,6 +35,12 @@ const HomePage = () => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
+
+  const handleClickComic = (slug: string) => {
+    console.log(slug);
+    navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
+  };
+  console.log(dataComic);
   return (
     <>
       <div className="flex items-center pt-[15px] cursor-pointer">
@@ -53,6 +61,7 @@ const HomePage = () => {
               <div
                 key={comic._id}
                 className="h-[auto] shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-110  cursor-pointer mb-[10px] rounded-md relative"
+                onClick={() => handleClickComic(comic.slug)}
               >
                 <img
                   src={`${import.meta.env.VITE_IMG_URL}${comic.thumb_url}`}

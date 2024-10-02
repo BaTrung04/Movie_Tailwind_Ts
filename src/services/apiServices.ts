@@ -16,7 +16,7 @@ export const getCategoriesBySlug = async (slug: string, page: number) => {
   return await axiosAPI.get(`/the-loai/${slug}?page=${page}`);
 };
 export const getComic = async (slug: string) => {
-  return await axiosAPI.get(`/truyen-tranh/tu-vong-quan-chu/${slug}`);
+  return await axiosAPI.get(`/truyen-tranh/${slug}`);
 };
 export const getSearch = async (keyword: string) => {
   return await axiosAPI.get(`/tim-kiem?keyword=${keyword}`);

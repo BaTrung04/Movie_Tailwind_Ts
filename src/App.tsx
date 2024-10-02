@@ -52,8 +52,8 @@ function App() {
                 <Route path="/dang-phat-hanh" element={<ComingSoon />} />
                 <Route path="/hoan-thanh" element={<Complete />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/truyen-tranh/:slug" element={<SlugComic />} />
               </Route>
-              <Route path="/Slug" element={<SlugComic />} />
             </Routes>
           </div>
         </div>
