@@ -3,7 +3,7 @@ import { getCategories } from "../../services/apiServices";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import CarouselHome from "../Carousel/CarouselHome";
-
+import { AiOutlineUpload } from "react-icons/ai";
 interface Categories {
   _id: string;
   slug: string;
@@ -13,6 +13,7 @@ interface Categories {
 const Home = () => {
   const [DataCategories, setDataCategories] = useState<Categories[]>([]);
   const navigate = useNavigate();
+  const [showSticky, setShowSticky] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -25,8 +26,32 @@ const Home = () => {
     };
     fetchApi();
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 800) {
+        setShowSticky(true);
+      } else {
+        setShowSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup để xóa sự kiện khi component bị unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleClickCategories = (slug: string) => {
     navigate(`/the-loai/${slug}`, { state: { slug: slug } });
+  };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // cuộn mượt mà
+    });
   };
   return (
     <>
@@ -53,7 +78,14 @@ const Home = () => {
           </div>
         </div>
       </div>
-      
+      {showSticky && (
+        <div
+          className="fixed  bg-slate-400 bottom-[30px] right-[30px] w-[50px] h-[50px] lg:w-[70px] lg:h-[70px] flex items-center justify-center rounded-[999px] cursor-pointer hover:bg-red-200"
+          onClick={scrollToTop}
+        >
+          <AiOutlineUpload size={30} />
+        </div>
+      )}
     </>
   );
 };

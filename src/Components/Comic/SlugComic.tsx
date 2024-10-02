@@ -75,6 +75,7 @@ const SlugComic = () => {
   }) => {
     navigate(`/detail`, { state: { chap: chap } });
   };
+  console.log(data);
   return (
     <>
       <div>

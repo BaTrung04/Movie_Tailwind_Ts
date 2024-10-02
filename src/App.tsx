@@ -12,6 +12,7 @@ import NavBar from "./Components/Navbar/NavBar";
 import { useEffect, useState } from "react";
 import Categories from "./Components/Categories/Categories";
 import DetailComic from "./Components/DetailComic/DetailComic";
+import Footer from "./Components/Footer/Footer";
 interface WindowSize {
   width: number | undefined;
   height: number | undefined;
@@ -59,6 +60,7 @@ function App() {
               </Route>
               <Route path="/detail" element={<DetailComic />} />
             </Routes>
+            <Footer />
           </div>
         </div>
       </Router>
