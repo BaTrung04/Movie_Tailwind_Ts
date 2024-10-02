@@ -1,27 +1,25 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home/Home";
-import NavBar from "./Components/Navbar/NavBar";
 import NewStory from "./Components/NewStory/NewStory";
 import Releasing from "./Components/Releasing/Releasing";
 import ComingSoon from "./Components/ComingSoon/ComingSoon";
 import Complete from "./Components/Complete/Complete";
-import { useEffect, useState } from "react";
-import CarouselHome from "./Components/Carousel/CarouselHome";
 import HomePage from "./Components/Home/HomePage";
-
+import Search from "./Components/Search/Search";
+import SlugComic from "./Components/Comic/SlugComic";
+import NavBar from "./Components/Navbar/NavBar";
+import { useEffect, useState } from "react";
 interface WindowSize {
   width: number | undefined;
   height: number | undefined;
 }
-
 function App() {
+  const [isMobile, setMobile] = useState<boolean>(false);
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: undefined,
     height: undefined,
   });
-  const [isMobile, setMobile] = useState<boolean>(false);
-
   useEffect(() => {
     const handleSize = () => {
       setWindowSize({
@@ -44,9 +42,8 @@ function App() {
     <>
       <Router>
         <div>
-          <NavBar isMobile={isMobile} />
-          <CarouselHome />
           <div className="">
+            <NavBar isMobile={isMobile} />
             <Routes>
               <Route path="/" element={<Home />}>
                 <Route index element={<HomePage />} />
@@ -54,7 +51,9 @@ function App() {
                 <Route path="/sap-ra-mat" element={<Releasing />} />
                 <Route path="/dang-phat-hanh" element={<ComingSoon />} />
                 <Route path="/hoan-thanh" element={<Complete />} />
+                <Route path="/search" element={<Search />} />
               </Route>
+              <Route path="/Slug" element={<SlugComic />} />
             </Routes>
           </div>
         </div>

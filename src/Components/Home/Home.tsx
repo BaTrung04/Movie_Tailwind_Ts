@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getCategories } from "../../services/apiServices";
 
 import { Outlet } from "react-router-dom";
+import CarouselHome from "../Carousel/CarouselHome";
 
 interface Categories {
   _id: string;
@@ -26,6 +27,7 @@ const Home = () => {
 
   return (
     <>
+      <CarouselHome />
       <div className="container flex p-0 bg-white">
         {/* left */}
         <div className="flex-[7.5]">

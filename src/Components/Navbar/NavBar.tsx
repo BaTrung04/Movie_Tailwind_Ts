@@ -3,6 +3,7 @@ import logo from "../../assets/logo.svg";
 import { useState } from "react";
 import { HiOutlineMenu } from "react-icons/hi";
 import { MdOutlineClose } from "react-icons/md";
+import { getSearch } from "../../services/apiServices";
 
 interface NavbarLink {
   id: number;
@@ -11,11 +12,20 @@ interface NavbarLink {
 }
 
 interface NavBarProps {
-  isMobile: boolean; // Định nghĩa prop isMobile
+  isMobile: boolean;
+}
+interface SearchResult {
+  titlePage: string;
+  items: [
+    _id:string,
+    
+  ];
 }
 const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>("");
+  const [dataSearch, setDataSearch] = useState<SearchResult[] | null>(null);
   const NavbarLinks: NavbarLink[] = [
     {
       id: 1,
@@ -58,6 +68,25 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
       navigate(`${slug}`, { state: { slug } });
       setOpenMenu(false);
     };
+  const handleSearch = async () => {
+    if (keyword) {
+      try {
+        const res = await getSearch(keyword);
+        setDataSearch(res.data);
+        console.log(dataSearch);
+        navigate("/search", { state: { dataSearch: res.data } });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+      setKeyword("");
+    }
+  };
   return (
     <div className="bg-sky-300  ">
       <nav className="container h-[120px] lg:flex lg:justify-between items-center lg:h-[60px] p-[5px] relative">
@@ -104,7 +133,7 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
             </>
           )}
           {openMenu && (
-            <div className="absolute w-[100%] top-[120px] shadow-lg bg-white z-50 text-13 ">
+            <div className="absolute w-[100%] top-[120px] shadow-lg bg-white z-[500] text-13 ">
               <ul className="flex flex-col gap-1 content-start ">
                 {NavbarLinks.map((link) => {
                   return (
@@ -127,13 +156,21 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
           )}
         </div>
         {/* Tìm kiếm */}
-        <label className="input  flex items-center gap-2">
-          <input type="text" className="grow" placeholder="Search" />
+        <label className="input flex items-center gap-2 h-[40px]">
+          <input
+            type="text"
+            className="grow"
+            value={keyword}
+            placeholder="Tìm truyện"
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
             fill="currentColor"
             className="h-4 w-4 opacity-70"
+            onClick={handleSearch}
           >
             <path
               fillRule="evenodd"
