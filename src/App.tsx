@@ -7,7 +7,8 @@ import Releasing from "./Components/Releasing/Releasing";
 import ComingSoon from "./Components/ComingSoon/ComingSoon";
 import Complete from "./Components/Complete/Complete";
 import { useEffect, useState } from "react";
-import Carousel from "./Components/Carousel/Carousel";
+import CarouselHome from "./Components/Carousel/CarouselHome";
+import HomePage from "./Components/Home/HomePage";
 
 interface WindowSize {
   width: number | undefined;
@@ -44,14 +45,16 @@ function App() {
       <Router>
         <div>
           <NavBar isMobile={isMobile} />
-          <Carousel />
+          <CarouselHome />
           <div className="">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/truyen-moi" element={<NewStory />} />
-              <Route path="/sap-ra-mat" element={<Releasing />} />
-              <Route path="/dang-phat-hanh" element={<ComingSoon />} />
-              <Route path="/hoan-thanh" element={<Complete />} />
+              <Route path="/" element={<Home />}>
+                <Route index element={<HomePage />} />
+                <Route path="/truyen-moi" element={<NewStory />} />
+                <Route path="/sap-ra-mat" element={<Releasing />} />
+                <Route path="/dang-phat-hanh" element={<ComingSoon />} />
+                <Route path="/hoan-thanh" element={<Complete />} />
+              </Route>
             </Routes>
           </div>
         </div>
