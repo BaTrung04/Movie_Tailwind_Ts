@@ -21,7 +21,6 @@ const HomePage = () => {
     const fetchApi = async () => {
       try {
         const res = await getHome();
-        console.log(res.data);
         setData(res.data);
         setDataComic(res.data.items);
       } catch (err) {

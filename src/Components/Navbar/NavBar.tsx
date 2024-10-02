@@ -54,7 +54,8 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
     (slug: string) =>
     (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       event.preventDefault();
-      navigate(`${slug}`);
+      console.log(slug);
+      navigate(`${slug}`, { state: { slug } });
       setOpenMenu(false);
     };
   return (
