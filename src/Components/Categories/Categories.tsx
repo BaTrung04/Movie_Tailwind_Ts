@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { IoHome } from "react-icons/io5";
-import { IoChevronForwardOutline } from "react-icons/io5";
-import { getList } from "../../services/apiServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getCategoriesBySlug } from "../../services/apiServices";
+import { IoChevronForwardOutline, IoHome } from "react-icons/io5";
 interface Comic {
   _id: string;
   name: string;
@@ -15,55 +14,49 @@ interface Data {
   type_list: string;
 }
 
-const Releasing = () => {
-  const [data, setData] = useState<Data>({ type_list: "" });
-  const [dataComic, setDataComic] = useState<Comic[]>([]);
-  const [page, setPage] = useState<number>(1);
+const Categories = () => {
   const location = useLocation();
   const { slug } = location.state || { slug: null };
-  const [perPage, setPerPage] = useState<number>(1);
-  const type = slug;
+  const [page, setPage] = useState<number>(1);
+  const [data, setData] = useState<Data>({ type_list: "" });
+  const [dataComic, setDataComic] = useState<Comic[]>([]);
   const navigate = useNavigate();
+  const [perPage, setPerPage] = useState<number>(1);
+  console.log(slug);
   useEffect(() => {
     const fetchApi = async () => {
       try {
-        const res = await getList(type, page);
+        const res = await getCategoriesBySlug(slug, page);
         setData(res.data);
-        setPerPage(res.data.params.pagination.currentPage);
         setDataComic(res.data.items);
       } catch (err) {
         console.log(err);
       }
     };
     fetchApi();
-  }, [page]);
+  }, [slug, page]);
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
-  const handleClickHome =
-    (path: string) =>
-    (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-      event.preventDefault();
-      navigate(`${path}`);
-    };
+
+  console.log(data);
   const handleClickComic = (slug: string) => {
+    console.log(slug);
     navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
   };
   return (
     <>
+      {" "}
       <div className="flex items-center pt-[15px] cursor-pointer">
-        <h1
-          className=" text-blue-400 text-[22px] underline  ml-[15px]"
-          onClick={handleClickHome("/")}
-        >
+        <h1 className=" text-blue-400 text-[22px] underline  ml-[15px]">
           <IoHome />
         </h1>
         <h1 className=" text-blue-400 text-[22px] underline  ">
           <IoChevronForwardOutline />
         </h1>
         <h1 className=" text-blue-400 text-[22px] underline  ">
-          {data.type_list}
+          Thể Loại: {data.type_list}
         </h1>
       </div>
       <div className="grid grid-cols-2 auto-rows-auto lg:grid-cols-3 lg:auto-rows-auto xl:grid-cols-5 xl:auto-rows-auto gap-2 px-[5px] py-[15px] rounded-md">
@@ -150,4 +143,4 @@ const Releasing = () => {
   );
 };
 
-export default Releasing;
+export default Categories;

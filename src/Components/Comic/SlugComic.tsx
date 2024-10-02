@@ -52,7 +52,6 @@ const SlugComic = () => {
   }, [slug]);
 
   console.log(data);
-  console.log(chap);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -64,7 +63,18 @@ const SlugComic = () => {
       event.preventDefault();
       navigate(`${path}`);
     };
-
+  const handleClickCategories = (slug: string) => {
+    console.log(slug);
+    navigate(`/the-loai/${slug}`, { state: { slug: slug } });
+  };
+  const handleClickReadComic = (chap: {
+    filename: string;
+    chapter_name: string;
+    chapter_title: string;
+    chapter_api_data: string;
+  }) => {
+    navigate(`/detail`, { state: { chap: chap } });
+  };
   return (
     <>
       <div>
@@ -109,11 +119,14 @@ const SlugComic = () => {
               <TbCategory2 className="top-[3px] relative" />
               <span>
                 Thể loại:
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 auto-rows-auto gap-[10px] mt-[5px]">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 auto-rows-auto gap-[10px] mt-[5px]">
                   {category &&
                     category.map((item) => {
                       return (
-                        <div className="lg:text-[20px] bg-blue-100  rounded-md p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden ">
+                        <div
+                          className="lg:text-[20px] bg-blue-100  rounded-md lg:p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden "
+                          onClick={() => handleClickCategories(item.slug)}
+                        >
                           {item.name}
                         </div>
                       );
@@ -122,10 +135,21 @@ const SlugComic = () => {
               </span>
             </div>
             <div className="flex items-center justify-center mt-[30px]">
-              <button className="bg-yellow-400 text-white p-[7px] lg:px-[15px] lg:py-[10px] rounded-lg shadow-sm hover:shadow-md mr-[20px] hover:bg-amber-600">
+              <button
+                className="bg-yellow-400 text-white p-[7px] lg:px-[15px] lg:py-[10px] rounded-lg shadow-sm hover:shadow-md mr-[20px] hover:bg-amber-600"
+                onClick={() => handleClickReadComic(chap.server_data[0])}
+              >
                 Đọc từ đầu
               </button>
-              <button className="bg-yellow-400 text-white p-[7px] lg:px-[15px] lg:py-[10px]  rounded-lg shadow-sm hover:shadow-md hover:bg-amber-600">
+              <button
+                className="bg-yellow-400 text-white p-[7px] lg:px-[15px] lg:py-[10px]  rounded-lg shadow-sm hover:shadow-md hover:bg-amber-600"
+                onClick={
+                  () =>
+                    handleClickReadComic(
+                      chap.server_data[chap.server_data.length - 1]
+                    ) // Lấy tập cuối cùng
+                }
+              >
                 Đọc tập mới nhất
               </button>
             </div>
@@ -155,7 +179,10 @@ const SlugComic = () => {
             chap.server_data.map((chap) => {
               return (
                 <>
-                  <div className="text-[13px] lg:text-[18px] flex justify-between border-b-[1px] border-dotted gap-[5px] py-[5px]  cursor-pointer hover:text-blue-700 hover:text-[19px]">
+                  <div
+                    className="text-[13px] lg:text-[18px] flex justify-between border-b-[1px] border-dotted gap-[5px] py-[5px]  cursor-pointer hover:text-blue-700 hover:text-[19px]"
+                    onClick={() => handleClickReadComic(chap)}
+                  >
                     <div>Chap: {chap.chapter_name}</div>
                     <div>{chap.filename}</div>
                   </div>

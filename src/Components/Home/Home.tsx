@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCategories } from "../../services/apiServices";
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import CarouselHome from "../Carousel/CarouselHome";
 
 interface Categories {
@@ -12,6 +12,7 @@ interface Categories {
 
 const Home = () => {
   const [DataCategories, setDataCategories] = useState<Categories[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -24,7 +25,9 @@ const Home = () => {
     };
     fetchApi();
   }, []);
-
+  const handleClickCategories = (slug: string) => {
+    navigate(`/the-loai/${slug}`, { state: { slug: slug } });
+  };
   return (
     <>
       <CarouselHome />
@@ -41,6 +44,7 @@ const Home = () => {
                   <div
                     key={categories._id}
                     className="text-[14px] bg-blue-100  rounded-md p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden"
+                    onClick={() => handleClickCategories(categories.slug)}
                   >
                     {categories.name}
                   </div>
@@ -49,6 +53,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      
     </>
   );
 };

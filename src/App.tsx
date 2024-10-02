@@ -10,6 +10,8 @@ import Search from "./Components/Search/Search";
 import SlugComic from "./Components/Comic/SlugComic";
 import NavBar from "./Components/Navbar/NavBar";
 import { useEffect, useState } from "react";
+import Categories from "./Components/Categories/Categories";
+import DetailComic from "./Components/DetailComic/DetailComic";
 interface WindowSize {
   width: number | undefined;
   height: number | undefined;
@@ -53,7 +55,9 @@ function App() {
                 <Route path="/hoan-thanh" element={<Complete />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/truyen-tranh/:slug" element={<SlugComic />} />
+                <Route path="/the-loai/:slug" element={<Categories />} />
               </Route>
+              <Route path="/detail" element={<DetailComic />} />
             </Routes>
           </div>
         </div>

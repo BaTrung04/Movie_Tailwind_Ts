@@ -49,7 +49,6 @@ const CarouselHome: React.FC = () => {
     fetchApi();
   }, []);
   const handleClickComic = (slug: string) => {
-    console.log(slug);
     navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
   };
   return (
