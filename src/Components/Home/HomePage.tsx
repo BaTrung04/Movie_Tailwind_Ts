@@ -40,7 +40,6 @@ const HomePage = () => {
     console.log(slug);
     navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
   };
-  console.log(dataComic);
   return (
     <>
       <div className="flex items-center pt-[15px] cursor-pointer">

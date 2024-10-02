@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import { getList } from "../../services/apiServices";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 interface Comic {
   _id: string;
   name: string;
@@ -20,6 +20,7 @@ const NewStory = () => {
   const [dataComic, setDataComic] = useState<Comic[]>([]);
   const [page, setPage] = useState<number>(1);
   const location = useLocation();
+  const navigate = useNavigate();
   const { slug } = location.state || { slug: null };
   const [perPage, setPerPage] = useState<number>(1);
   console.log(slug);
@@ -41,7 +42,10 @@ const NewStory = () => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
-
+  const handleClickComic = (slug: string) => {
+    console.log(slug);
+    navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
+  };
   return (
     <>
       <div className="flex items-center pt-[15px] cursor-pointer">
@@ -62,6 +66,7 @@ const NewStory = () => {
               <div
                 key={comic._id}
                 className="h-[auto] shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-110  cursor-pointer mb-[10px] rounded-md relative"
+                onClick={() => handleClickComic(comic.slug)}
               >
                 <img
                   src={`${import.meta.env.VITE_IMG_URL}${comic.thumb_url}`}

@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Search = () => {
   const location = useLocation();
   const { dataSearch } = location.state || { slug: null };
   const [page, setPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(1);
+  const navigate = useNavigate();
+
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString();
+  };
+
+  const handleClickComic = (slug: string) => {
+    console.log(slug);
+    navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
   };
 
   return (
@@ -23,6 +30,7 @@ const Search = () => {
               <div
                 key={comic._id}
                 className="h-[auto] shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-110  cursor-pointer mb-[10px] rounded-md relative"
+                onClick={() => handleClickComic(comic.slug)}
               >
                 <img
                   src={`${import.meta.env.VITE_IMG_URL}${comic.thumb_url}`}

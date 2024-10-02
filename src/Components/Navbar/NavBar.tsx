@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Thêm useLocation
 import logo from "../../assets/logo.svg";
 import { useState } from "react";
 import { HiOutlineMenu } from "react-icons/hi";
@@ -14,39 +14,24 @@ interface NavbarLink {
 interface NavBarProps {
   isMobile: boolean;
 }
+
 interface SearchResult {
   titlePage: string;
-  items: [
-    _id:string,
-    
-  ];
+  items: [_id: string];
 }
+
 const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Sử dụng useLocation để lấy thông tin đường dẫn
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
   const [dataSearch, setDataSearch] = useState<SearchResult[] | null>(null);
+
   const NavbarLinks: NavbarLink[] = [
-    {
-      id: 1,
-      title: "Truyện Mới",
-      slug: "truyen-moi",
-    },
-    {
-      id: 2,
-      title: "Sắp ra mắt",
-      slug: "sap-ra-mat",
-    },
-    {
-      id: 3,
-      title: "Đang phát hành",
-      slug: "dang-phat-hanh",
-    },
-    {
-      id: 4,
-      title: "Hoàn thành",
-      slug: "hoan-thanh",
-    },
+    { id: 1, title: "Truyện Mới", slug: "truyen-moi" },
+    { id: 2, title: "Sắp ra mắt", slug: "sap-ra-mat" },
+    { id: 3, title: "Đang phát hành", slug: "dang-phat-hanh" },
+    { id: 4, title: "Hoàn thành", slug: "hoan-thanh" },
   ];
 
   const handleMenu = () => {
@@ -64,16 +49,15 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
     (slug: string) =>
     (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       event.preventDefault();
-      console.log(slug);
-      navigate(`${slug}`, { state: { slug } });
+      navigate(`/${slug}`, { state: { slug } });
       setOpenMenu(false);
     };
+
   const handleSearch = async () => {
     if (keyword) {
       try {
         const res = await getSearch(keyword);
         setDataSearch(res.data);
-        console.log(dataSearch);
         navigate("/search", { state: { dataSearch: res.data } });
       } catch (err) {
         console.log(err);
@@ -87,15 +71,16 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
       setKeyword("");
     }
   };
+
   return (
-    <div className="bg-sky-300  ">
+    <div className="bg-sky-300">
       <nav className="container h-[120px] lg:flex lg:justify-between items-center lg:h-[60px] p-[5px] relative">
-        <div className="items-center justify-between flex  lg:justify-start lg:w-[100%]">
+        <div className="items-center justify-between flex lg:justify-start lg:w-[100%]">
           {/* Logo */}
           <img
             src={logo}
             alt=""
-            className="w-[150px] relative top-[-7px] cursor-pointer "
+            className="w-[150px] relative top-[-7px] cursor-pointer"
             onClick={handleClickHome("/")}
           />
           {/* Thể loại */}
@@ -116,11 +101,14 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
               <div className="">
                 <ul className="flex gap-3 xl:gap-6">
                   {NavbarLinks.map((link) => {
+                    const isActive = location.pathname.includes(link.slug); // Kiểm tra nếu đường dẫn hiện tại khớp với slug
                     return (
                       <li key={link.id}>
                         <a
                           href={link.slug}
-                          className="hover:text-primary text-sm xl:text-base md:text-base cursor-pointer"
+                          className={`hover:text-primary text-sm xl:text-base md:text-base cursor-pointer ${
+                            isActive ? "font-bold text-white uppercase " : ""
+                          }`} // Áp dụng kiểu cho liên kết active
                           onClick={handleClickPage(link.slug)}
                         >
                           {link.title}
@@ -136,6 +124,7 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
             <div className="absolute w-[100%] top-[120px] shadow-lg bg-white z-[500] text-13 ">
               <ul className="flex flex-col gap-1 content-start ">
                 {NavbarLinks.map((link) => {
+                  const isActive = location.pathname.includes(link.slug);
                   return (
                     <div
                       key={link.id}
@@ -143,7 +132,9 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
                     >
                       <a
                         href={link.slug}
-                        className="hover:text-primary uppercase text-sm xl:text-base md:text-base cursor-pointer"
+                        className={`hover:text-primary uppercase text-sm xl:text-base md:text-base cursor-pointer ${
+                          isActive ? "font-bold text-blue-500 " : ""
+                        }`}
                         onClick={handleClickPage(link.slug)}
                       >
                         {link.title}

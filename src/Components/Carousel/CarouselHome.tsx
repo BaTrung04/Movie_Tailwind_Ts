@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getHome } from "../../services/apiServices";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useNavigate } from "react-router-dom";
 
 interface Data {
   _id: string;
@@ -35,6 +36,7 @@ const responsive = {
 };
 const CarouselHome: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -46,6 +48,10 @@ const CarouselHome: React.FC = () => {
     };
     fetchApi();
   }, []);
+  const handleClickComic = (slug: string) => {
+    console.log(slug);
+    navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
+  };
   return (
     <div className="container p-0 py-[15px] px-[3px]">
       <Carousel
@@ -66,6 +72,7 @@ const CarouselHome: React.FC = () => {
                 src={`${import.meta.env.VITE_IMG_URL}${urlImg.thumb_url}`}
                 alt=""
                 className="h-[320px] cursor-pointer"
+                onClick={() => handleClickComic(urlImg.slug)}
               />
             </div>
           ))}

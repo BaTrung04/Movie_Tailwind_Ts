@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getComic } from "../../services/apiServices";
 import { IoChevronForwardOutline, IoHome } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
@@ -36,7 +36,7 @@ const SlugComic = () => {
   const [data, setData] = useState<Data[]>([]);
   const [chap, setChap] = useState<Chap[]>([]);
   const [category, setCategory] = useState<Category[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -58,11 +58,20 @@ const SlugComic = () => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
+  const handleClickHome =
+    (path: string) =>
+    (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+      event.preventDefault();
+      navigate(`${path}`);
+    };
 
   return (
     <>
       <div>
-        <div className="flex items-center pt-[15px] cursor-pointer">
+        <div
+          className="flex items-center pt-[15px] cursor-pointer"
+          onClick={handleClickHome("/")}
+        >
           <h1 className=" text-blue-400 text-[22px] underline  ml-[15px]">
             <IoHome />
           </h1>

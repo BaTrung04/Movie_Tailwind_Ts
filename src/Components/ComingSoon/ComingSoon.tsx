@@ -43,15 +43,22 @@ const ComingSoon = () => {
     return date.toLocaleString();
   };
   const handleClickHome =
-  (path: string) =>
-  (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-    event.preventDefault();
-    navigate(`${path}`);
+    (path: string) =>
+    (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+      event.preventDefault();
+      navigate(`${path}`);
+    };
+  const handleClickComic = (slug: string) => {
+    console.log(slug);
+    navigate(`/truyen-tranh/${slug}`, { state: { slug: slug } });
   };
   return (
     <>
       <div className="flex items-center pt-[15px] cursor-pointer">
-        <h1 className=" text-blue-400 text-[22px] underline  ml-[15px]"   onClick={handleClickHome("/")}>
+        <h1
+          className=" text-blue-400 text-[22px] underline  ml-[15px]"
+          onClick={handleClickHome("/")}
+        >
           <IoHome />
         </h1>
         <h1 className=" text-blue-400 text-[22px] underline  ">
@@ -68,6 +75,7 @@ const ComingSoon = () => {
               <div
                 key={comic._id}
                 className="h-[auto] shadow-md hover:shadow-2xl transition-transform duration-300 hover:scale-110  cursor-pointer mb-[10px] rounded-md relative"
+                onClick={() => handleClickComic(comic.slug)}
               >
                 <img
                   src={`${import.meta.env.VITE_IMG_URL}${comic.thumb_url}`}
