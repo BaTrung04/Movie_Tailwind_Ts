@@ -7,6 +7,7 @@ import Releasing from "./Components/Releasing/Releasing";
 import ComingSoon from "./Components/ComingSoon/ComingSoon";
 import Complete from "./Components/Complete/Complete";
 import { useEffect, useState } from "react";
+import Carousel from "./Components/Carousel/Carousel";
 
 interface WindowSize {
   width: number | undefined;
@@ -43,7 +44,8 @@ function App() {
       <Router>
         <div>
           <NavBar isMobile={isMobile} />
-          <div className="p-4">
+          <Carousel />
+          <div className="">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/truyen-moi" element={<NewStory />} />

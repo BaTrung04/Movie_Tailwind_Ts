@@ -103,7 +103,7 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
             </>
           )}
           {openMenu && (
-            <div className="absolute w-[100%] z-999 top-[120px] shadow-lg bg-white  text-13 ">
+            <div className="absolute w-[100%] top-[120px] shadow-lg bg-white z-50 text-13 ">
               <ul className="flex flex-col gap-1 content-start ">
                 {NavbarLinks.map((link) => {
                   return (
