@@ -5,7 +5,7 @@ const Search = () => {
   const location = useLocation();
   const { dataSearch } = location.state || { slug: null };
   const [page, setPage] = useState<number>(1);
-  const [perPage, setPerPage] = useState<number>(1);
+  const [perPage] = useState<number>(1);
   const navigate = useNavigate();
 
   const formatDateTime = (dateString: string) => {
@@ -25,7 +25,7 @@ const Search = () => {
       </h1>
       <div className="grid grid-cols-2 auto-rows-auto lg:grid-cols-3 lg:auto-rows-auto xl:grid-cols-5 xl:auto-rows-auto gap-2 px-[5px] py-[15px] rounded-md">
         {dataSearch.items &&
-          dataSearch.items.map((comic) => {
+          dataSearch.items.map((comic: any) => {
             return (
               <div
                 key={comic._id}

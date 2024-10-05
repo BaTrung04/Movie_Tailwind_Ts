@@ -21,8 +21,7 @@ const Categories = () => {
   const [data, setData] = useState<Data>({ type_list: "" });
   const [dataComic, setDataComic] = useState<Comic[]>([]);
   const navigate = useNavigate();
-  const [perPage, setPerPage] = useState<number>(1);
-  console.log(slug);
+  const [perPage,] = useState<number>(1);
   useEffect(() => {
     const fetchApi = async () => {
       try {
