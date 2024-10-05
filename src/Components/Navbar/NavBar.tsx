@@ -15,18 +15,17 @@ interface NavBarProps {
   isMobile: boolean;
 }
 
-interface SearchResult {
-  titlePage: string;
-  items: [_id: string];
-}
+// interface SearchResult {
+//   titlePage: string;
+//   items: [_id: string];
+// }
 
 const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
   const navigate = useNavigate();
   const location = useLocation(); // Sử dụng useLocation để lấy thông tin đường dẫn
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
-  const [dataSearch, setDataSearch] = useState<SearchResult[] | null>(null);
-
+  // const [, setDataSearch] = useState<SearchResult[] | null>(null);
   const NavbarLinks: NavbarLink[] = [
     { id: 1, title: "Truyện Mới", slug: "truyen-moi" },
     { id: 2, title: "Sắp ra mắt", slug: "sap-ra-mat" },
@@ -57,7 +56,7 @@ const NavBar: React.FC<NavBarProps> = ({ isMobile }) => {
     if (keyword) {
       try {
         const res = await getSearch(keyword);
-        setDataSearch(res.data);
+        // setDataSearch(res.data);
         navigate("/search", { state: { dataSearch: res.data } });
       } catch (err) {
         console.log(err);

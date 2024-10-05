@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IoChevronForwardOutline, IoHome } from "react-icons/io5";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Data {
   chapter_image: DataImg[];
@@ -15,8 +15,9 @@ interface DataImg {
 }
 const DetailComic = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { chap } = location.state || { chap: {} };
-  const [data, setData] = useState<Data[]>([]);
+  const [data, setData] = useState<Data | null>(null);
   const [dataImg, setDataImg] = useState<DataImg[]>([]);
   const [showSticky, setShowSticky] = useState<boolean>(false);
   useEffect(() => {
@@ -53,12 +54,19 @@ const DetailComic = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const handleClickHome = (
+    event: React.MouseEvent<HTMLDivElement | SVGElement, MouseEvent>,
+    path: string
+  ) => {
+    event.preventDefault();
+    navigate(`${path}`);
+  };
   return (
     <>
       <div className="container p-0 bg-white">
         <div
           className="flex items-center pt-[15px] cursor-pointer"
-          // onClick={handleClickHome("/")}
+          onClick={(e) => handleClickHome(e, "/")}
         >
           <h1 className=" text-blue-400 text-[22px] underline  ml-[15px]">
             <IoHome />
@@ -109,9 +117,9 @@ const DetailComic = () => {
                 <div className="flex items-center justify-center">
                   <img
                     src={`${import.meta.env.VITE_IMG_CHAP_URL}${
-                      data.chapter_path
+                      data?.chapter_path
                     }/${img.image_file}`}
-                    alt={img.image_page}
+                    alt={img.image_page.toString()}
                     key={img.image_page}
                   />
                 </div>
@@ -123,7 +131,12 @@ const DetailComic = () => {
         <div className="sticky w-[100%] bg-slate-400 bottom-0 h-[60px]">
           <div className="container p-0">
             <div className="flex items-center justify-center py-[5px] gap-[5px]">
-              <IoHome size={37} color="#fff" />
+              <IoHome
+                size={37}
+                color="#fff"
+                className="hover:text-blue-400"
+                onClick={(e) => handleClickHome(e, "/")}
+              />
               <button className="join-item btn text-[30px]">«</button>
               <button className="join-item btn">Page 22</button>
               <button className="join-item btn text-[30px]">»</button>

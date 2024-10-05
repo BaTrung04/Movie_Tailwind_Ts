@@ -13,6 +13,7 @@ interface Data {
   thumb_url: string;
   slug: string;
   author: string;
+  status: string;
 }
 
 interface ServerData {
@@ -28,13 +29,14 @@ interface Chap {
 
 interface Category {
   name: string;
+  slug: string;
 }
 
 const SlugComic = () => {
   const location = useLocation();
   const { slug } = location.state || { slug: null };
-  const [data, setData] = useState<Data[]>([]);
-  const [chap, setChap] = useState<Chap[]>([]);
+  const [data, setData] = useState<Data | null>(null);
+  const [chap, setChap] = useState<Chap | null>(null);
   const [category, setCategory] = useState<Category[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -53,9 +55,11 @@ const SlugComic = () => {
 
   console.log(data);
 
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString();
+  const formatDateTime = (dateString: string | undefined) => {
+    if (dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    }
   };
   const handleClickHome =
     (path: string) =>
@@ -67,13 +71,8 @@ const SlugComic = () => {
     console.log(slug);
     navigate(`/the-loai/${slug}`, { state: { slug: slug } });
   };
-  const handleClickReadComic = (chap: {
-    filename: string;
-    chapter_name: string;
-    chapter_title: string;
-    chapter_api_data: string;
-  }) => {
-    navigate(`/detail`, { state: { chap: chap } });
+  const handleClickReadComic = (chap: ServerData | undefined) => {
+    if (chap) navigate(`/detail`, { state: { chap: chap } });
   };
   console.log(data);
   return (
@@ -94,27 +93,27 @@ const SlugComic = () => {
           </h1>
         </div>
         <h1 className="flex items-center justify-center text-[15px] lg:text-[25px] py-[5px] uppercase font-bold">
-          {data.name}
+          {data?.name}
         </h1>
         <div className="text-[12px] lg:text-[15px] text-center italic">
-          [Cập nhật: {formatDateTime(data.updatedAt)}]
+          [Cập nhật: {formatDateTime(data?.updatedAt)}]
         </div>
         <div className="lg:flex m-[20px] gap-[20px]">
           <img
-            src={`${import.meta.env.VITE_IMG_URL}${data.thumb_url}`}
-            alt={data.slug}
+            src={`${import.meta.env.VITE_IMG_URL}${data?.thumb_url}`}
+            alt={data?.slug}
             className=" flex-[3.5] rounded-md m-auto h-[240px] lg:h-auto"
           />
           <div className="flex-[6.5] ">
             <div className="flex text-gray-500 lg:text-[20px] mb-[10px] mt-[5px] lg:mt-0">
               <FaUser className="top-[3px] relative" />
               <span>
-                Tác giả: <span className=""></span> {data.author}
+                Tác giả: <span className=""></span> {data?.author}
               </span>
             </div>
             <div className="flex text-gray-500 lg:text-[20px] mb-[10px]">
               <HiStatusOnline className="top-[3px] relative" />
-              <span>Tình trạng: {data.status}</span>
+              <span>Tình trạng: {data?.status}</span>
             </div>
             <div className="flex text-gray-500 lg:text-[20px] mb-[10px]">
               <TbCategory2 className="top-[3px] relative" />
@@ -126,7 +125,7 @@ const SlugComic = () => {
                       return (
                         <div
                           className="lg:text-[20px] bg-blue-100  rounded-md lg:p-[7px] xl:p-[10px] hover:bg-[#7dd3fc] hover:text-white cursor-pointer overflow-hidden "
-                          onClick={() => handleClickCategories(item.slug)}
+                          onClick={() => handleClickCategories(item?.slug)}
                         >
                           {item.name}
                         </div>
@@ -138,7 +137,7 @@ const SlugComic = () => {
             <div className="flex items-center justify-center mt-[30px]">
               <button
                 className="bg-yellow-400 text-white p-[7px] lg:px-[15px] lg:py-[10px] rounded-lg shadow-sm hover:shadow-md mr-[20px] hover:bg-amber-600"
-                onClick={() => handleClickReadComic(chap.server_data[0])}
+                onClick={() => handleClickReadComic(chap?.server_data[0])}
               >
                 Đọc từ đầu
               </button>
@@ -147,7 +146,7 @@ const SlugComic = () => {
                 onClick={
                   () =>
                     handleClickReadComic(
-                      chap.server_data[chap.server_data.length - 1]
+                      chap?.server_data[chap?.server_data.length - 1]
                     ) // Lấy tập cuối cùng
                 }
               >
@@ -157,10 +156,10 @@ const SlugComic = () => {
           </div>
         </div>
         <h1 className="lg:text-[20px] mx-[20px]">
-          Nội dung truyện: {data.name}
+          Nội dung truyện: {data?.name}
         </h1>
         <p className="text-[14px] lg:text-[18px] ml-[20px] text-gray-600">
-          Chào mừng độc giả thân mến của Truyen, {data.name} là bộ truyện tranh
+          Chào mừng độc giả thân mến của Truyen, {data?.name} là bộ truyện tranh
           hấp dẫn mà NetTruyen muốn mang đến cho các bạn. Đây là bộ truyện tranh
           nằm trong thể loại{" "}
           {category &&
@@ -176,8 +175,8 @@ const SlugComic = () => {
           <span className="text-[20px] ml-[5px]">Danh sách các tập</span>
         </div>
         <div className="mt-[10px] rounded-md border p-[10px]">
-          {chap.server_data &&
-            chap.server_data.map((chap) => {
+          {chap?.server_data &&
+            chap?.server_data.map((chap) => {
               return (
                 <>
                   <div
